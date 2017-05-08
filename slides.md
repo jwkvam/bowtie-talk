@@ -40,7 +40,19 @@ class: title, center, middle
 
 # Motivation
 
+???
+What's my motivation for making this.
+This is an open-source project
+Why would I want to build this.
+
+--
+
 - Want to click on a chart and generate another chart.
+
+???
+Hello
+
+--
 
 - TODO put in two charts of a point and line graph
 
@@ -108,7 +120,7 @@ class: center, middle
 
 ---
 
-# Define the components
+# Select the components
 
 These are the widgets that exist in your app.
 
@@ -126,8 +138,9 @@ ddown = Dropdown()
 
 These will get called in response to JS events.
 ```
+import plotlywrapper as pw
 def callback(item):
-    chart = pw.line(range(5))
+    chart = pw.line(range(item['value']))
     plot.do_all(chart.dict)
 ```
 
@@ -151,6 +164,8 @@ def build():
 
 ---
 
+class: title, center, middle
+
 # Advanced Features
 
 ---
@@ -171,16 +186,40 @@ def build():
 
 ---
 
+class: center, middle
+
 # Deploying
 
 ---
+
+class: center, middle
 
 # Tech Stack
 
 ---
 
+# Flask for the Python Backend
+
+---
+
+# React
+
+All widgets are React components.
+
+---
+
+# SocketIO
+
+---
+
+
+class: center, middle
 
 # Future Work and Goals
+
+---
+
+
 
 ---
 
@@ -194,6 +233,10 @@ def build():
     - Michael Roberts
 
 - To Jeff for letting me present.
+
+???
+My Verdigris coworkers helped give feedback while it was still in it's early stages.
+It was very helpful to see where "users" end up getting stuck.
 
 ---
 
