@@ -4,6 +4,7 @@
 import pendulum
 
 import pandas as pd
+import numpy as np
 import pandas_datareader as pbr
 
 from bowtie.visual import Plotly
@@ -12,6 +13,7 @@ from bowtie.control import Textbox, Button
 import plotlywrapper as pw
 
 joint = Plotly()
+time = Plotly()
 
 stock1 = Textbox()
 stock2 = Textbox()
@@ -24,8 +26,11 @@ def clicked():
     st1 = stock1.get()
     st2 = stock2.get()
 
-    d1 = pbr.get_data_yahoo(st1)
-    d2 = pbr.get_data_yahoo(st2)
+    od1 = pbr.get_data_yahoo(st1)
+    od2 = pbr.get_data_yahoo(st2)
+
+    d1 = log_returns(od1)
+    d2 = log_returns(od2)
 
     chart = pw.scatter(d1, d2)
     chart.xlabel(st1)
@@ -33,16 +38,18 @@ def clicked():
 
     joint.do_all(chart.dict)
 
+    chart = pw.line(od1.index[1:], d1, label=st1)
+    chart += pw.line(od2.index[1:], d2, label=st2)
+    time.do_all(chart.dict)
+
 
 from bowtie import Layout, command
 @command
 def build():
-    layout = Layout(sidebar=True, debug=False)
-
-    # layout.columns[1].pixels(100)
-    # layout.rows[0].pixels(40)
+    layout = Layout(rows=2, sidebar=True, debug=False)
 
     layout.add(joint)
+    layout.add(time)
     layout.add_sidebar(stock1)
     layout.add_sidebar(stock2)
     layout.add_sidebar(button)
