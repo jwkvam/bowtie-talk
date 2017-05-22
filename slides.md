@@ -281,9 +281,10 @@ Now we just need to connect events to functions and lay out the widgets.
 --
 
 ```
-from bowtie import Layout, command
+from bowtie import command
 @command
 def build():
+    from bowtie import Layout
     layout = Layout()
     layout.add(plot)
     layout.add_sidebar(ddown)
@@ -296,13 +297,14 @@ def build():
 # Layout the App
 
 ```
-from bowtie import Layout, command
+from bowtie import command
 ```
 
 The command decorator turns this function into a command line interface.
 ```
 @command
 def build():
+    from bowtie import Layout
     layout = Layout()
     layout.add(plot)
     layout.add_sidebar(ddown)
@@ -315,9 +317,10 @@ def build():
 # Layout the App
 
 ```
-from bowtie import Layout, command
+from bowtie import command
 @command
 def build():
+    from bowtie import Layout
     layout = Layout()
 ```
 These `add*` calls place widgets into our app.
@@ -333,9 +336,10 @@ These `add*` calls place widgets into our app.
 # Layout the App
 
 ```
-from bowtie import Layout, command
+from bowtie import command
 @command
 def build():
+    from bowtie import Layout
     layout = Layout()
     layout.add(plot)
     layout.add_sidebar(ddown)
@@ -351,9 +355,10 @@ def build():
 # Layout the App
 
 ```
-from bowtie import Layout, command
+from bowtie import command
 @command
 def build():
+    from bowtie import Layout
     layout = Layout()
     layout.add(plot)
     layout.add_sidebar(ddown)
@@ -410,7 +415,7 @@ class: title, center, middle
 
 ```
 def func(item1, item2, switch):
-    # awesome stuff
+    cool_stuff()
 ...
 layout.subscribe(func, ddown1.on_select, ddown2.on_select, switch.on_switch)
 ```
@@ -515,6 +520,32 @@ class: center, middle
 
 # Deploying
 
+--
+
+- Heroku is an easy option.
+
+--
+
+- Set `Layout(debug=False)`
+
+--
+
+- Compile with production.
+
+```
+$ python app.py prod
+```
+
+--
+
+- Commit the following files
+
+```
+build/src/server.py
+build/src/templates/index.html
+build/src/static/bundle.js.gz
+```
+
 ---
 
 class: center, middle
@@ -537,13 +568,30 @@ class: center, middle
 
 - You can still benefit from the Flask ecosystem.
 
+--
+
+- For example, if you want to scale Bowtie you could use NGINX to do so.
+
+--
+
+- Kind of wish the user still touched Flask because it's a great API.
+
+
 ---
 
 # React
 
 --
 
-- All widgets are React components.
+- Nick Kridler (author of Pyxley) wrote about using React with Python.
+
+--
+
+- The "front-end" is written entirely in React.
+
+--
+
+- Making a new widget means making a new React class that communicates via socket.io.
 
 ---
 
@@ -551,14 +599,63 @@ class: center, middle
 
 ---
 
-
 class: center, middle
 
 # Future Work and Goals
 
 ---
 
+# Some things I don't like
 
+--
+
+- You need to recompile your app to run it (when you make architectural changes) which takes a minute.
+
+--
+
+- Compared to some other dashboards Bowtie isn't quite as snappy.
+
+--
+
+- Perhaps too much magic happening behind the scenes, harder for users to change things and fix issues.
+
+---
+
+# Goals
+
+--
+
+- Become Shiny!
+
+--
+
+- Okay, but seriously.
+
+--
+
+- Needs to be more robust, have better testing.
+
+--
+
+- More widgets from ant.design.
+
+--
+
+- Visual refresh: make it look nice.
+
+--
+
+- Make it easier to scale and deploy.
+
+--
+
+- Jupyter integration (possible?)
+
+---
+
+# Goals
+
+### Whether Bowtie becomes the Shiny of Python or not, I simply want to move the bar forward.
 
 ---
 
@@ -579,7 +676,7 @@ It was very helpful to see where "users" end up getting stuck.
 
 ---
 
-# Resources
+# Thanks
 
 - Github: `github.com/jwkvam/bowtie`
 
