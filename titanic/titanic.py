@@ -51,6 +51,7 @@ test.drop('Ticket', axis=1, inplace=True)
 train_plot = Plotly()
 test_plot = Plotly()
 table = Table(results_per_page=20)
+summary = Table(results_per_page=7)
 
 
 def load():
@@ -72,21 +73,35 @@ def load():
 def train_select(points):
     idx = [x['pointNumber'] for x in points['points']]
     table.do_data(train.iloc[idx])
+    summ = train.iloc[idx].describe().iloc[1:, 1:]
+    summ = summ.round(2)
+    summ = summ.reset_index()
+    summary.do_data(summ)
 
 
 def test_select(points):
     idx = [x['pointNumber'] for x in points['points']]
     table.do_data(test.iloc[idx])
+    summ = test.iloc[idx].describe().iloc[1:, 1:]
+    summ = summ.reset_index()
+    summ = summ.round(2)
+    summary.do_data(summ)
 
 
 from bowtie import Layout, command
 @command
 def build():
-    layout = Layout(rows=2, columns=2, sidebar=False, debug=True)
+    layout = Layout(rows=3, columns=2, sidebar=False, debug=True)
+
+    layout.rows[0].fraction(3)
+    layout.rows[1].fraction(1)
+    layout.rows[2].fraction(2)
+    layout.columns[1].fraction(3)
 
     layout.add(train_plot, 0, 0)
-    layout.add(test_plot, 1, 0)
+    layout.add(test_plot, 1, 0, 2, 0)
     layout.add(table, 0, 1, 1, 1)
+    layout.add(summary, 2, 1)
 
     layout.subscribe(train_select, train_plot.on_select)
     layout.subscribe(test_select, test_plot.on_select)

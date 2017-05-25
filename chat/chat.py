@@ -13,8 +13,11 @@ talk = Textbox()
 click = Button('submit')
 chat = Textbox(autosize=True, disabled=True, area=True)
 
+def to_text(entry):
+    return f'{entry[0].diff_for_humans()}: {entry[1]}'
+
 def update_chat():
-    chat.do_text('\n'.join(list(LINES.queue)[::-1]))
+    chat.do_text('\n'.join(map(to_text, list(LINES.queue)[::-1])))
 
 def clicked():
     text = talk.get()
@@ -25,7 +28,7 @@ def entered(text):
         _ = LINES.get()
     tt = text[:144]
     now = pendulum.utcnow()
-    LINES.put(f'{now}: {tt}')
+    LINES.put((now, tt))
     update_chat()
     talk.do_text('')
 
