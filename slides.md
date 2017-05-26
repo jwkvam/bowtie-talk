@@ -47,7 +47,7 @@ Later in the presentation if there's time I can show you how this is built, it's
 --
 
 - Computer Engineer turned "Data Scientist".
-<img src="macbook.jpg" style="width: 200px;"/>
+<img src="macbook.jpg" style="width: 150px;"/>
 
 ???
 basically once i started using this
@@ -55,15 +55,19 @@ basically once i started using this
 --
 
 - Work at energy analytics startup, Verdigris Technologies.
-<img src="energy.jpg" style="width: 200px;"/>
+<img src="energy.jpg" style="width: 150px;"/>
 
 ???
 We try to help buildings run better.
 
 --
 
+- Heavy Python user for 3-5 years.
+
+--
+
 - I'm *not* a frontend developer.
-<img src="book.svg" style="width: 200px;"/>
+<img src="book.svg" style="width: 150px;"/>
 
 ???
 I had to learn a lot and might be doing plenty wrong!
@@ -297,13 +301,23 @@ ddown = Dropdown()
 
 - Instructions for displaying itself in a webpage.
 
+???
+- Associated React component
+- NPM package
+
 --
 
 - Commands, prefixed with `do_`, to update the state of the widget.
 
+???
+For example, updating a plot, updating text, updating dropdown options
+
 --
 
 - Events, prefixed with `on_`, to run python in response to.
+
+???
+For example, click events, selections
 
 --
 
@@ -361,7 +375,7 @@ def build():
     layout = Layout()
     layout.add(plot)
     layout.add_sidebar(ddown)
-    layout.subscribe(callback, ddown.on_select)
+    layout.subscribe(callback, ddown.on_change)
     layout.build()
 ```
 
@@ -381,9 +395,13 @@ def build():
     layout = Layout()
     layout.add(plot)
     layout.add_sidebar(ddown)
-    layout.subscribe(callback, ddown.on_select)
+    layout.subscribe(callback, ddown.on_change)
     layout.build()
 ```
+
+???
+I can show this off in a demo.
+
 
 ---
 
@@ -400,9 +418,16 @@ These `add*` calls place widgets into our app.
 ```
     layout.add(plot)
     layout.add_sidebar(ddown)
-    layout.subscribe(callback, ddown.on_select)
+    layout.subscribe(callback, ddown.on_change)
     layout.build()
 ```
+
+???
+add adds it to the main view
+
+add_sidebar adds it to a special control side pane
+
+convenient for adding several controllers to it.
 
 ---
 
@@ -419,7 +444,7 @@ def build():
 ```
 `subscribe` makes sure the callback gets run in response to the given event.
 ```
-    layout.subscribe(callback, ddown.on_select)
+    layout.subscribe(callback, ddown.on_change)
     layout.build()
 ```
 
@@ -432,14 +457,49 @@ from bowtie import command
 @command
 def build():
     from bowtie import Layout
-    layout = Layout()
+    layout = Layout(debug=True)
     layout.add(plot)
     layout.add_sidebar(ddown)
-    layout.subscribe(callback, ddown.on_select)
+    layout.subscribe(callback, ddown.on_change)
 ```
 Finally, `build` compiles the app for us.
 ```
     layout.build()
+```
+
+---
+
+# Build and Serve
+
+--
+
+- We're done writing the app, time to build and run it.
+
+--
+
+- The CLI we have gives us these commands:
+
+```
+Commands:
+  build  Write the app, downloads the packages, and...
+  dev    Recompile the app for development.
+  prod   Recompile the app for production.
+  serve  Serve the Bowtie app.
+```
+
+--
+
+```
+$ ./app.py build
+```
+
+???
+Takes a minute.
+
+--
+
+```
+$ ./app.py serve
 ```
 
 ---
@@ -548,7 +608,7 @@ layout.subscribe(func, ddown1.on_select, ddown2.on_select, switch.on_switch)
 
 --
 
-- You can schedule a function to run when a user loads the page.
+- Instruct a function to run when a user loads the page.
 
 ```
 layout.load(func)
@@ -556,7 +616,7 @@ layout.load(func)
 
 --
 
-- You can schedule a function to run periodically.
+- Instruct a function to run periodically.
 
 ```
 layout.schedule(5, func) # call func every 5 seconds
@@ -568,7 +628,11 @@ layout.schedule(5, func) # call func every 5 seconds
 
 --
 
-- In some cases it's helpful to be able to store data about the client.
+- In some cases it's helpful to be able to store data with the client.
+
+???
+- expensive computations
+- user selected data
 
 --
 
@@ -581,6 +645,9 @@ layout.schedule(5, func) # call func every 5 seconds
 --
 
 - `bowtie.cache` gives a "key-value" store to save any python objects.
+
+???
+that are json serializable
 
 --
 
@@ -598,6 +665,18 @@ value = bowtie.cache.load(key)
 --
 
 - All visual widgets have an attached progress indicator.
+
+--
+
+- By default they are invisible so they don't get in your way.
+
+--
+
+- Really helpful for long computations or slow I/O.
+
+--
+
+- Can also indicate error states.
 
 ---
 
@@ -648,6 +727,14 @@ value = bowtie.cache.load(key)
 --
 
 - Want to have a generic authentication solution.
+
+--
+
+- I'm not a security expert so don't trust me.
+
+---
+
+background-image: url(demo.jpg)
 
 ---
 
@@ -704,6 +791,9 @@ class: center, middle
 --
 
 - Bowtie abstracts away most of Flask.
+
+???
+This was because I wanted to make it fast and easy to build apps.
 
 --
 
@@ -766,7 +856,7 @@ For example, if you want to scale Bowtie you could use NGINX to do so.
 
 --
 
-- Unfortunate leaky abstraction, but I don't want to have bowtie to do node delivery.
+- Leaky abstraction, but I don't want to turn bowtie into a node delivery device.
 
 ---
 
@@ -860,7 +950,9 @@ I would like to hear from you!
 
 ---
 
-# The Real Goal
+class: center, middle
+
+# My Real Goal
 
 ### Whether Bowtie becomes the Shiny of Python or not, I simply want to move the bar forward.
 
@@ -879,7 +971,10 @@ I would like to hear from you!
 
 ???
 My Verdigris coworkers helped give feedback while it was still in it's early stages.
+
 It was very helpful to see where "users" end up getting stuck.
+
+Also gave me hope that they could work with it relatively easily.
 
 ---
 
