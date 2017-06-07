@@ -16,8 +16,8 @@ Then open http://localhost:8000/
 
 ### View PDF of HTML Slides
 
-    open slides.pdf
+[slides.pdf](slides.pdf)
     
 ### View markdown
 
-    open slides.md
+[slides.md](slides.md)
